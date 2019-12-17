@@ -2,7 +2,9 @@
 # Ryan Chien
 # 12/16/2019
 # The objective of this code is to use an two-index integer linear program to solve Sudoku
-# The more common ILP method of solving Sudoku is with three indicies: https://towardsdatascience.com/using-integer-linear-programming-to-solve-sudoku-puzzles-15e9d2a70baa
+# The more common ILP method of solving Sudoku is with three indicies:
+### Example 1: <https://towardsdatascience.com/using-integer-linear-programming-to-solve-sudoku-puzzles-15e9d2a70baa>
+### Example 2: <https://www.mathworks.com/help/optim/examples/solve-sudoku-puzzles-via-integer-programming.html>
 
 #libraries
 from ortools.linear_solver import pywraplp
@@ -45,14 +47,13 @@ initial_board = np.array([
     [0, 0, 0, 4, 0, 0, 0, 1, 0],
     [0, 2, 9, 8, 0, 0, 0, 3, 4]
 ])
+
 # Create solver
 print("(1) Initializing optimization model...")
 solver = pywraplp.Solver(
     "Sudoku",
     pywraplp.Solver.CBC_MIXED_INTEGER_PROGRAMMING)
-
 objective = solver.Objective()
-
 objective.SetMinimization
 
 # Create objective variable array
