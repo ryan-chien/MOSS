@@ -29,8 +29,8 @@ With the following constraints:
 ## Current Status
 As of current (12/16/2019), MOSS satisfies the all-different constraints within each row (e).
 Constraints (b) and (c) are also satisfied. However, the all-different constraints within each 
-column (f) are not satisfied, and neither are the summation constraints within each nonet (e).
-Thus, satisfaction of constraints (e) and (f) are the subject of ongoing study. See below for an example input board,
+column (f) are not satisfied, and neither are the summation constraints within each nonet (d).
+Thus, satisfaction of constraints (d) and (f) are the subject of ongoing study. See below for an example input board,
 and MOSS solution (i.e. output).
 
     Here is the input Sudoku board:
