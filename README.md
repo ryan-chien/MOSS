@@ -21,13 +21,17 @@ With the following constraints:
 >
 > (d) SUM(x_i_j)==45 for x_i_j within each nonet
 >
-> (e) ABS(x_i_j - x_noti_notj)>=1 for all i,j (all-different constraint)
+> (e) ABS(x_i_j - x_i_notj)>=1 for all i, j
+>
+> (f) ABS(x_i_j - x_noti_j)>=1 for all i, j
+
 
 ## Current Status
-As of current (12/16/2019), MOSS satisfies the all-different constraints within each row. However, neither the
-all-different constraints within each column nor the all-different constraints within each nonet are satisfied.
-Thus, satisfaction of these constraints are the subject of ongoing study. See below for an example input board, and
-MOSS solution (i.e. output).
+As of current (12/16/2019), MOSS satisfies the all-different constraints within each row (e).
+Constraints (b) and (c) are also satisfied. However, the all-different constraints within each 
+column (f) are not satisfied, and neither are the summation constraints within each nonet (e).
+Thus, satisfaction of constraints (e) and (f) are the subject of ongoing study. See below for an example input board,
+and MOSS solution (i.e. output).
 
     Here is the input Sudoku board:
      [  [0, 0, 0, 0, 0, 4, 0, 2, 8],
