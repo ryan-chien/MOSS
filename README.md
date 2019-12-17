@@ -21,7 +21,7 @@ With the following constraints:
 >
 > (d) SUM(x_i_j)==45 for x_i_j within each nonet
 >
-> (e) ABS(x_i_j - x_noti_notj)>=1 for all i, (all-different constraint)
+> (e) ABS(x_i_j - x_noti_notj)>=1 for all i,j (all-different constraint)
 
 ## Current Status
 As of current (12/16/2019), MOSS satisfies the all-different constraints within each row. However, neither the
