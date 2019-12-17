@@ -9,9 +9,23 @@ MOSS utilizes the absolute value constraint to enforce the all-different rule ne
 For details of the absolute value constraint, see Gurobi Modeling, "Non Convex Case", page 9:
 <https://www.gurobi.com/pdfs/user-events/2017-frankfurt/Modeling-2.pdf>
 
+## Modeling Approach
+MOSS is based on finding a feasible solution to:
+ > (a) Minimize SUM(x_i_j)
+
+With the following constraints:
+
+> (b) SUM(x_i_j)==45 across j for all i
+>
+> (c) SUM(x_i_j)==45 across i for all j
+>
+> (d) SUM(x_i_j)==45 for x_i_j within each nonet
+>
+> (e) ABS(x_i_j - x_noti_notj)>=1 for all i, (all-different constraint)
+
 ## Current Status
 As of current (12/16/2019), MOSS satisfies the all-different constraints within each row. However, neither the
-all-different constraints within each column nor the all-different constraints within each nonlet are satisfied.
+all-different constraints within each column nor the all-different constraints within each nonet are satisfied.
 Thus, satisfaction of these constraints are the subject of ongoing study. See below for an example input board, and
 MOSS solution (i.e. output).
 
@@ -25,7 +39,9 @@ MOSS solution (i.e. output).
         [0, 0, 2, 0, 1, 0, 0, 0, 3],
         [9, 0, 0, 0, 0, 0, 5, 0, 7],
         [6, 7, 0, 4, 0, 0, 0, 0, 0]  ]
-
+    
+    MOSS must fill in the zeros...
+    
     And the output provided by MOSS:
      [  [6. 3. 5. 7. 1. 4. 9. 2. 8.]
         [4. 1. 6. 2. 8. 9. 3. 7. 5.]
