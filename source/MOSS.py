@@ -1,3 +1,9 @@
+# MOSS: Mathematical Optimization Sudoku Solver
+# Ryan Chien
+# 12/16/2019
+# The objective of this code is to use an two-index integer linear program to solve Sudoku
+# The more common ILP method of solving Sudoku is with three indicies: https://towardsdatascience.com/using-integer-linear-programming-to-solve-sudoku-puzzles-15e9d2a70baa
+
 #libraries
 from ortools.linear_solver import pywraplp
 import numpy as np
