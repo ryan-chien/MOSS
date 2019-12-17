@@ -1,5 +1,6 @@
-MOSS: Mathematical Optimization Sudoku Solver
+# MOSS: Mathematical Optimization Sudoku Solver
 
+## Background
 Sudoku can be solved using a 3-index integer linear program (ILP) formulation, (google "ILP Sudoku"
 and read the first three hits). So it is pointless to find an alternate 2-index solution. Yet here I am, and
 here you are.
@@ -8,6 +9,7 @@ MOSS utilizes the absolute value constraint to enforce the all-different rule ne
 For details of the absolute value constraint, see Gurobi Modeling, "Non Convex Case", page 9:
 <https://www.gurobi.com/pdfs/user-events/2017-frankfurt/Modeling-2.pdf>
 
+## Current Status
 As of current (12/16/2019), MOSS satisfies the all-different constraints within each row. However, neither the
 all-different constraints within each column nor the all-different constraints within each nonlet are satisfied.
 Thus, satisfaction of these constraints are the subject of ongoing study. See below for an example input board, and
@@ -35,4 +37,9 @@ MOSS solution (i.e. output).
         [9. 8. 1. 2. 6. 4. 5. 3. 7.]
         [6. 7. 1. 4. 9. 2. 8. 3. 5.]  ]
 
-Thanks to Seth W for the inspiration for this toy problem.
+## Acknowledgements
+Thanks to Seth W for the inspiration for this toy problem, the COIN CBC developers for making a great open-source
+ILP solver, and the google-ortools team for the mathematical modeling interface.
+
+## Dependencies
+MOSS is dependent on 'ortools' and 'numpy'.
