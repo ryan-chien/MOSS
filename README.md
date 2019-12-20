@@ -11,26 +11,26 @@ For details of the absolute value constraint, see Gurobi Modeling, "Non Convex C
 
 ## Modeling Approach
 MOSS is based on finding a feasible solution to:
- > (a) Minimize SUM(x_i_j)
+```
+(a) Minimize SUM(x_i_j)
+```
 
 With the following constraints:
-
-> (b) SUM(x_i_j)==45 across j for all i
->
-> (c) SUM(x_i_j)==45 across i for all j
->
-> (d) SUM(x_i_j)==45 for x_i_j within each nonet
->
-> (e) ABS(x_i_j - x_i_notj)>=1 for all i, j
->
-> (f) ABS(x_i_j - x_noti_j)>=1 for all i, j
-
+```
+(b) SUM(x_i_j)==45 across j for all i
+(c) SUM(x_i_j)==45 across i for all j
+(d) SUM(x_i_j)==45 for x_i_j within each nonet
+(e) ABS(x_i_j - x_i_notj)>=1 for all i, j
+(f) ABS(x_i_j - x_noti_j)>=1 for all i, j
+```
 
 ## Current Status
 As of current (12/20/2019), MOSS satisfies constraints (b, c, e, f).
 
-
 ``` {python}
+>>> import MOSS
+>>> import numpy as np
+
 >>> difficult_board_9 = np.array([
 ...     [2, 0, 0, 3, 0, 0, 0, 0, 0],
 ...     [8, 0, 4, 0, 6, 2, 0, 0, 3],
