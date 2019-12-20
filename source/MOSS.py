@@ -31,7 +31,6 @@ gentle_board_5 = np.array([
     [0, 2, 0, 0, 0],
     [0, 5, 0, 0, 0]
 ])
-initial_board = gentle_board_5
 
 def moss(initial_board, max_solve_time=120000):
     # libraries
@@ -200,7 +199,7 @@ def moss(initial_board, max_solve_time=120000):
     # Set constraint: t equals difference of objective value pairs row-wise (e.g. t0102 - x01 + x02 = 0)
     t_cols = []
     constraint_t_cols = []
-    for i in range(0, 9):
+    for i in range(0, board_len):
         t_x = []
         constraint_t_x = []
         for k in range(0, board_len-1):
@@ -334,3 +333,7 @@ def moss(initial_board, max_solve_time=120000):
         "model_lp_file": model_as_string,
         "solver_object": solver
     })
+
+gb5_solved = moss(gentle_board_5)
+
+gentle_board_solved = moss(gentle_board, max_solve_time=600000)
