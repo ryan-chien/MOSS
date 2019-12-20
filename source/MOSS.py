@@ -24,7 +24,14 @@ gentle_board = np.array([
     [6, 7, 0, 4, 0, 0, 0, 0, 0]
 ])
 
-initial_board = gentle_board
+gentle_board_5 = np.array([
+    [1, 0, 0, 0, 0],
+    [2, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0],
+    [0, 2, 0, 0, 0],
+    [0, 5, 0, 0, 0]
+])
+initial_board = gentle_board_5
 
 def moss(initial_board, max_solve_time=120000):
     # libraries
@@ -38,49 +45,52 @@ def moss(initial_board, max_solve_time=120000):
     objective = solver.Objective()
     objective.SetMinimization
 
+    # Get needed range
+    board_len = initial_board.__len__()
+
     # Create objective variable array
     print("(2) Creating objective variables...")
     objective_vars = np.array([
-        [solver.IntVar(1, 9, 'x' + str(j) + str(i)) for i in range(0, 9)]
-        for j in range(0, 9)])
+        [solver.IntVar(1, board_len, 'x' + str(j) + str(i)) for i in range(0, board_len)]
+        for j in range(0, board_len)])
 
     # Set initial board constraints
     print("(3) Setting constraints...")
-    constraint_initial = [[]] * 9
-    for i in range(0, 9):
-        for j in range(0, 9):
+    constraint_initial = []
+    for i in range(0, board_len):
+        for j in range(0, board_len):
             if initial_board[i][j] != 0:
-                constraint_initial[i].append(
+                constraint_initial.append(
                     solver.Add(
                         objective_vars[i][j] == initial_board[i][j],
                         'init_x'+str(i)+str(j)+'=='+str(initial_board[i][j])))
             else:
-                constraint_initial[i].append(
+                constraint_initial.append(
                     'init_x'+str(i)+str(j)+'==NONE'
                 )
 
     # Set constraint: sum of rows must equal 45
-    constraint_rowsum = [[]] * 9
-    for i in range(0, 9):
+    constraint_rowsum = [[]] * board_len
+    for i in range(0, board_len):
         constraint_rowsum[i] = solver.Add(
-            sum(objective_vars[i]) == 45)
+            sum(objective_vars[i]) == sum(range(board_len+1)))
 
     # Set constraint: sum of columns must equal 45
-    constraint_colsum = [[]] * 9
-    for j in range(0, 9):
+    constraint_colsum = [[]] * board_len
+    for j in range(0, board_len):
         constraint_colsum[j] = solver.Add(
-            sum(objective_vars[:, j]) == 45)
+            sum(objective_vars[:, j]) == sum(range(board_len+1)))
 
     # Set constraint: t equals difference of objective value pairs row-wise (e.g. t0102 - x01 + x02 = 0)
     t_rows = []
     constraint_t_rows = []
-    for i in range(0, 9):
+    for i in range(0, board_len):
         t_i = []
         constraint_t_i = []
-        for k in range(0, 8):
+        for k in range(0, board_len-1):
             t_j = []
             constraint_t_j = []
-            for j in range(0+k, 8):
+            for j in range(0+k, board_len-1):
                 # one t for each unique objective variable x pair
                 t_j.append(
                     solver.IntVar(
@@ -193,10 +203,10 @@ def moss(initial_board, max_solve_time=120000):
     for i in range(0, 9):
         t_x = []
         constraint_t_x = []
-        for k in range(0, 8):
+        for k in range(0, board_len-1):
             t_y = []
             constraint_t_y = []
-            for j in range(0 + k, 8):
+            for j in range(0 + k, board_len-1):
                 # one t for each unique objective variable x pair
                 t_y.append(
                     solver.IntVar(
@@ -312,8 +322,8 @@ def moss(initial_board, max_solve_time=120000):
     if status != 0:
         print("Solve failed, see status for details.")
     solution_values = np.array([
-        [objective_vars[i][j].solution_value() for j in range(0, 9)]
-        for i in range(0, 9)
+        [objective_vars[i][j].solution_value() for j in range(0, board_len)]
+        for i in range(0, board_len)
     ])
     model_as_string = solver.ExportModelAsLpFormat(False)
 
