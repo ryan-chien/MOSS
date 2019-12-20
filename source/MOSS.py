@@ -187,121 +187,121 @@ def moss(initial_board, max_solve_time=120000):
         constraint_yp_rows.append(constraint_yp_i)
         constraint_yn_rows.append(constraint_yn_i)
 
-        # Set constraint: t equals difference of objective value pairs row-wise (e.g. t0102 - x01 + x02 = 0)
-        t_cols = []
-        constraint_t_cols = []
-        for i in range(0, 8):
-            t_x = []
-            constraint_t_x = []
-            for k in range(0, 9):
-                t_y = []
-                constraint_t_y = []
-                for j in range(0 + k, 8):
-                    # one t for each unique objective variable x pair
-                    t_y.append(
-                        solver.IntVar(
-                            -99, 99, 't_'+str(k)+str(i)+str(j+1)+str(i)))  # range of -99 to 99
-                    constraint_t_y.append(
-                        solver.Add(  # e.g. t0001=x00-x01 ... t0002=x00-x02
-                            t_y[j-k]
-                            - objective_vars[i][k]
-                            + objective_vars[j+1][i]
-                            == 0,
-                            't_' + str(k) + str(i) + str(j+1) + str(i)))
-                    #print("Constraint: " + t_j[j-k].name() + ' - ' + objective_vars[k][i].name()
-                    #        + ' + ' + objective_vars[j+1][i].name() + ' = ' + ' 0 ')
-                t_x.append(t_y)
-                constraint_t_x.append(constraint_t_y)
-            t_cols.append(t_x)
-            constraint_t_cols.append(constraint_t_x)
+    # Set constraint: t equals difference of objective value pairs row-wise (e.g. t0102 - x01 + x02 = 0)
+    t_cols = []
+    constraint_t_cols = []
+    for i in range(0, 9):
+        t_x = []
+        constraint_t_x = []
+        for k in range(0, 8):
+            t_y = []
+            constraint_t_y = []
+            for j in range(0 + k, 8):
+                # one t for each unique objective variable x pair
+                t_y.append(
+                    solver.IntVar(
+                        -99, 99, 't_'+str(k)+str(i)+str(j+1)+str(i)))  # range of -99 to 99
+                constraint_t_y.append(
+                    solver.Add(  # e.g. t0001=x00-x01 ... t0002=x00-x02
+                        t_y[j-k]
+                        - objective_vars[k][i]
+                        + objective_vars[j+1][i]
+                        == 0,
+                        't_' + str(k) + str(i) + str(j+1) + str(i)))
+                print("Constraint: " + t_y[j-k].name() + ' - ' + objective_vars[k][i].name()
+                        + ' + ' + objective_vars[j+1][i].name() + ' = ' + ' 0 ')
+            t_x.append(t_y)
+            constraint_t_x.append(constraint_t_y)
+        t_cols.append(t_x)
+        constraint_t_cols.append(constraint_t_x)
 
-        # Create constraint variables p, n, z, and y
-        p_cols = []
-        n_cols = []
-        z_cols = []
-        y_cols = []
-        for row in t_cols:
-            p_x = []
-            n_x = []
-            z_x = []
-            y_x = []
-            for column in row:
-                p_y = []
-                n_y = []
-                z_y = []
-                y_y = []
-                for variable_t in column:
-                    p_y.append(
-                        solver.IntVar(
-                            0, 99, 'p_' + variable_t.name()[1:5]))
-                    n_y.append(
-                        solver.IntVar(
-                            0, 99, 'n_' + variable_t.name()[1:5]))
-                    z_y.append(
-                        solver.IntVar(
-                            1, 99, 'z_' + variable_t.name()[1:5]))  # Note that z must be greater than or equal one
-                    y_y.append(
-                        solver.BoolVar(
-                            'y_' + variable_t.name()[1:5]))
-                p_x.append(p_y)
-                n_x.append(n_y)
-                z_x.append(z_y)
-                y_x.append(y_y)
-            p_cols.append(p_x)
-            n_cols.append(n_x)
-            z_cols.append(z_x)
-            y_cols.append(y_x)
+    # Create constraint variables p, n, z, and y
+    p_cols = []
+    n_cols = []
+    z_cols = []
+    y_cols = []
+    for row in t_cols:
+        p_x = []
+        n_x = []
+        z_x = []
+        y_x = []
+        for column in row:
+            p_y = []
+            n_y = []
+            z_y = []
+            y_y = []
+            for variable_t in column:
+                p_y.append(
+                    solver.IntVar(
+                        0, 99, 'p_' + variable_t.name()[2:6]))
+                n_y.append(
+                    solver.IntVar(
+                        0, 99, 'n_' + variable_t.name()[2:6]))
+                z_y.append(
+                    solver.IntVar(
+                        1, 99, 'z_' + variable_t.name()[2:6]))  # Note that z must be greater than or equal one
+                y_y.append(
+                    solver.BoolVar(
+                        'y_' + variable_t.name()[2:6]))
+            p_x.append(p_y)
+            n_x.append(n_y)
+            z_x.append(z_y)
+            y_x.append(y_y)
+        p_cols.append(p_x)
+        n_cols.append(n_x)
+        z_cols.append(z_x)
+        y_cols.append(y_x)
 
-        # Set constraints: z equal to the absolute value of objective variable pair differences (Big M formulation)
-        constraint_tpn_cols = []  # t-p+n=0
-        constraint_zpn_cols = []  # z-p-n=0     e.g. z is the absolute value of objective variable pair differences
-        constraint_yp_cols = []  # p-99*y<=0   Big-M formulation, where M=99, to enforce either y=0 or p=0
-        constraint_yn_cols = []  # n+99*y<=99  Big-M formulation, where M=99, to enforce either y=0 or p=0
-        for i in range(0, t_cols.__len__()):
-            constraint_tpn_x = []
-            constraint_zpn_x = []
-            constraint_yp_x = []
-            constraint_yn_x = []
-            for j in range(0, t_cols[i].__len__()):
-                constraint_tpn_y = []
-                constraint_zpn_y = []
-                constraint_yp_y = []
-                constraint_yn_y = []
-                for k in range(0, t_cols[i][j].__len__()):
-                    constraint_tpn_y.append(
-                        solver.Add(  # t-p+n=0
-                            t_cols[i][j][k]
-                            - p_cols[i][j][k]
-                            + n_cols[i][j][k]
-                            == 0,
-                            'tpn_' + t_cols[i][j][k].name()[1:5]))
-                    constraint_zpn_y.append(
-                        solver.Add(  # z-p-n=0
-                            z_cols[i][j][k]
-                            - p_cols[i][j][k]
-                            - n_cols[i][j][k]
-                            == 0,
-                            'zpn_' + z_cols[i][j][k].name()[1:5]))
-                    constraint_yp_y.append(  # p-99*y<=0
-                        solver.Add(
-                            p_cols[i][j][k]
-                            - 99 * y_cols[i][j][k]
-                            <= 0,
-                            'yp_' + p_cols[i][j][k].name()[1:5]))
-                    constraint_yn_y.append(  # n+99*y<=99
-                        solver.Add(
-                            n_cols[i][j][k]
-                            + 99 * y_cols[i][j][k]
-                            <= 99,
-                            'yn_' + n_cols[i][j][k].name()[1:5]))
-                constraint_tpn_x.append(constraint_tpn_y)
-                constraint_zpn_x.append(constraint_zpn_y)
-                constraint_yp_x.append(constraint_yp_y)
-                constraint_yn_x.append(constraint_yn_y)
-            constraint_tpn_cols.append(constraint_tpn_x)
-            constraint_zpn_cols.append(constraint_zpn_x)
-            constraint_yp_cols.append(constraint_yp_x)
-            constraint_yn_cols.append(constraint_yn_x)
+    # Set constraints: z equal to the absolute value of objective variable pair differences (Big M formulation)
+    constraint_tpn_cols = []  # t-p+n=0
+    constraint_zpn_cols = []  # z-p-n=0     e.g. z is the absolute value of objective variable pair differences
+    constraint_yp_cols = []  # p-99*y<=0   Big-M formulation, where M=99, to enforce either y=0 or p=0
+    constraint_yn_cols = []  # n+99*y<=99  Big-M formulation, where M=99, to enforce either y=0 or p=0
+    for i in range(0, t_cols.__len__()):
+        constraint_tpn_x = []
+        constraint_zpn_x = []
+        constraint_yp_x = []
+        constraint_yn_x = []
+        for j in range(0, t_cols[i].__len__()):
+            constraint_tpn_y = []
+            constraint_zpn_y = []
+            constraint_yp_y = []
+            constraint_yn_y = []
+            for k in range(0, t_cols[i][j].__len__()):
+                constraint_tpn_y.append(
+                    solver.Add(  # t-p+n=0
+                        t_cols[i][j][k]
+                        - p_cols[i][j][k]
+                        + n_cols[i][j][k]
+                        == 0,
+                        'tpn_' + t_cols[i][j][k].name()[2:6]))
+                constraint_zpn_y.append(
+                    solver.Add(  # z-p-n=0
+                        z_cols[i][j][k]
+                        - p_cols[i][j][k]
+                        - n_cols[i][j][k]
+                        == 0,
+                        'zpn_' + z_cols[i][j][k].name()[2:6]))
+                constraint_yp_y.append(  # p-99*y<=0
+                    solver.Add(
+                        p_cols[i][j][k]
+                        - 99 * y_cols[i][j][k]
+                        <= 0,
+                        'yp_' + p_cols[i][j][k].name()[2:6]))
+                constraint_yn_y.append(  # n+99*y<=99
+                    solver.Add(
+                        n_cols[i][j][k]
+                        + 99 * y_cols[i][j][k]
+                        <= 99,
+                        'yn_' + n_cols[i][j][k].name()[2:6]))
+            constraint_tpn_x.append(constraint_tpn_y)
+            constraint_zpn_x.append(constraint_zpn_y)
+            constraint_yp_x.append(constraint_yp_y)
+            constraint_yn_x.append(constraint_yn_y)
+        constraint_tpn_cols.append(constraint_tpn_x)
+        constraint_zpn_cols.append(constraint_zpn_x)
+        constraint_yp_cols.append(constraint_yp_x)
+        constraint_yn_cols.append(constraint_yn_x)
 
     # Solution
     solver.SetTimeLimit(max_solve_time)
