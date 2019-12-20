@@ -32,6 +32,16 @@ gentle_board_5 = np.array([
     [0, 5, 0, 0, 0]
 ])
 
+gentle_board_7 = np.array([
+    [1, 0, 0, 0, 0, 0, 0],
+    [2, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0],
+    [0, 2, 0, 0, 0, 0, 0],
+    [0, 5, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0, 0, 2]
+])
+
 def moss(initial_board, max_solve_time=120000):
     # libraries
     from ortools.linear_solver import pywraplp
@@ -334,6 +344,8 @@ def moss(initial_board, max_solve_time=120000):
         "solver_object": solver
     })
 
-gb5_solved = moss(gentle_board_5)
+gb5_sol = moss(gentle_board_5)
+
+gb7_sol = moss(gentle_board_7)
 
 gentle_board_solved = moss(gentle_board, max_solve_time=600000)
