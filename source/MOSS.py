@@ -208,8 +208,8 @@ def moss(initial_board, max_solve_time=120000):
                         + objective_vars[j+1][i]
                         == 0,
                         't_' + str(k) + str(i) + str(j+1) + str(i)))
-                print("Constraint: " + t_y[j-k].name() + ' - ' + objective_vars[k][i].name()
-                        + ' + ' + objective_vars[j+1][i].name() + ' = ' + ' 0 ')
+                #print("Constraint: " + t_y[j-k].name() + ' - ' + objective_vars[k][i].name()
+                #        + ' + ' + objective_vars[j+1][i].name() + ' = ' + ' 0 ')
             t_x.append(t_y)
             constraint_t_x.append(constraint_t_y)
         t_cols.append(t_x)
