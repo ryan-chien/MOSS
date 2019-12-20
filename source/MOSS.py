@@ -6,43 +6,7 @@
 ### Example 1: <https://towardsdatascience.com/using-integer-linear-programming-to-solve-sudoku-puzzles-15e9d2a70baa>
 ### Example 2: <https://www.mathworks.com/help/optim/examples/solve-sudoku-puzzles-via-integer-programming.html>
 
-#libraries
-from ortools.linear_solver import pywraplp
-import numpy as np
-
-# Define initial Sudoku board (solver input)
-# board from <https://www.sudokuwiki.org/sudoku.htm>, "Gentle"
-gentle_board = np.array([
-    [0, 0, 0, 0, 0, 4, 0, 2, 8],
-    [4, 0, 6, 0, 0, 0, 0, 0, 5],
-    [1, 0, 0, 0, 3, 0, 6, 0, 0],
-    [0, 0, 0, 3, 0, 1, 0, 0, 0],
-    [0, 8, 7, 0, 0, 0, 1, 4, 0],
-    [0, 0, 0, 7, 0, 9, 0, 0, 0],
-    [0, 0, 2, 0, 1, 0, 0, 0, 3],
-    [9, 0, 0, 0, 0, 0, 5, 0, 7],
-    [6, 7, 0, 4, 0, 0, 0, 0, 0]
-])
-
-gentle_board_5 = np.array([
-    [1, 0, 0, 0, 0],
-    [2, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0],
-    [0, 2, 0, 0, 0],
-    [0, 5, 0, 0, 0]
-])
-
-gentle_board_7 = np.array([
-    [1, 0, 0, 0, 0, 0, 0],
-    [2, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0],
-    [0, 2, 0, 0, 0, 0, 0],
-    [0, 5, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1],
-    [0, 0, 0, 0, 0, 0, 2]
-])
-
-def moss(initial_board, max_solve_time=120000):
+def solve_board(initial_board, max_solve_time=120000):
     # libraries
     from ortools.linear_solver import pywraplp
     import numpy as np
@@ -343,9 +307,3 @@ def moss(initial_board, max_solve_time=120000):
         "model_lp_file": model_as_string,
         "solver_object": solver
     })
-
-gb5_sol = moss(gentle_board_5)
-
-gb7_sol = moss(gentle_board_7)
-
-gentle_board_solved = moss(gentle_board, max_solve_time=600000)
