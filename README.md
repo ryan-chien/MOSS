@@ -34,9 +34,7 @@ For details of the absolute value constraint, see Gurobi Modeling, "Non Convex C
 As of 12/20/2019 MOSS satisfies all constraints.
 Now witness the firepower of this fully armed and operational battle station!
 
-
-![](/other/demo.gif | width = 300)
-
+<img src="/other/demo.gif" width="300" height="270">
 
 ``` {python}
 gentle_board_9 = np.array([
