@@ -35,7 +35,7 @@ As of 12/20/2019 MOSS satisfies all constraints.
 Now witness the firepower of this fully armed and operational battle station!
 
 
-![alt text](https://github.com/rychien-official/MOSS/tree/master/other/demo.gif)
+![alt text](https://github.com/rychien-official/MOSS/tree/master/other/demo.gif) "Demo"
 
 
 
