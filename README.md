@@ -2,15 +2,14 @@
 
 ## Background
 Sudoku can be solved using a 3-index integer linear program (ILP) formulation using only binary variables,
-(google "ILP Sudoku" and read the first three hits). But can it be solved with a two-index formulation using
-integer values [1:9]? (Yes.)
+(google "ILP Sudoku" and read the first three hits). 
 
-MOSS utilizes the absolute value constraint to enforce the all-different rule necesary for a Sudoku solution.
-For details of the absolute value constraint, see Gurobi Modeling, "Non Convex Case", page 9:
-<https://www.gurobi.com/pdfs/user-events/2017-frankfurt/Modeling-2.pdf>
+***But can it be solved with a two-index formulation using
+integer values [1:9]? (Yes.)***
+
 
 ## Modeling Approach
-MOSS is based on finding a feasible solution to:
+MOSS is based on finding a feasible solution to the following system of equations:
 ```
 (a) Minimize SUM(x_i_j)
 ```
@@ -24,6 +23,12 @@ With the following constraints:
 (f) ABS(x_i_j - x_noti_j)>=1 for all i, j
 ```
 Where x is the Sudoku board, and, x_i_j are cell-values within the board.
+
+Heuristics are completely unused. MOSS solves Sudoku using mathematical optimization only.
+
+MOSS utilizes the absolute value constraint to enforce the all-different rule necesary for a Sudoku solution.
+For details of the absolute value constraint, see Gurobi Modeling, "Non Convex Case", page 9:
+<https://www.gurobi.com/pdfs/user-events/2017-frankfurt/Modeling-2.pdf>.
 
 ## Current Status
 As of 12/20/2019 MOSS satisfies all constraints.

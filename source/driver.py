@@ -51,7 +51,22 @@ gentle_board_9 = np.array([
 gb9_sol = solve_board(gentle_board_9, max_solve_time=600000)
 print(gb9_sol['solution'])
 
-# 9x9 sodiku difficult board
+# 9x9 medium difficulty
+medium_board_9 = np.array([
+    [0, 9, 0, 5, 0, 0, 0, 0, 8],
+    [0, 0, 3, 0, 0, 7, 0, 2, 0],
+    [8, 0, 1, 0, 0, 0, 6, 0, 0],
+    [0, 6, 0, 0, 0, 8, 3, 9, 2],
+    [0, 0, 0, 0, 2, 0, 0, 0, 0],
+    [1, 2, 8, 6, 0, 0, 0, 4, 0],
+    [0, 0, 9, 0, 0, 0, 7, 0, 5],
+    [0, 1, 0, 2, 0, 0, 4, 0, 0],
+    [3, 0, 0, 0, 0, 5, 0, 1, 0]
+])
+mb9_sol = solve_board(medium_board_9, max_solve_time=120000)
+print(mb9_sol['solution'])
+
+# 9x9 difficult board
 difficult_board_9 = np.array([
     [2, 0, 0, 3, 0, 0, 0, 0, 0],
     [8, 0, 4, 0, 6, 2, 0, 0, 3],
@@ -63,5 +78,5 @@ difficult_board_9 = np.array([
     [6, 0, 1, 2, 5, 0, 8, 0, 9],
     [0, 0, 0, 0, 0, 1, 0, 0, 2]
 ])
-db9_sol = solve_board(difficult_board_9, max_solve_time=600000)
+db9_sol = solve_board(difficult_board_9, max_solve_time=1200000)
 print(db9_sol['solution'])
