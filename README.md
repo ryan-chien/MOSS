@@ -5,7 +5,7 @@ Sudoku can be solved using a 3-index integer linear program (ILP) formulation us
 (google "ILP Sudoku" and read the first three hits). 
 
 ***But can it be solved with a two-index formulation using
-integer values [1:9]? (Yes.)***
+integer values [1,9]? (Yes.)***
 
 
 ## Modeling Approach

@@ -19,7 +19,7 @@ print(gb9_sol['solution'])
 # 9x9 medium difficulty
 medium_board_9 = np.array([
     [0, 9, 0, 5, 0, 0, 0, 0, 8],
-    [0, 0, 3, 0, 0, 7, 0, 2, 0],
+    [0, 0, 3, 0, 0, 7, 0, 2, 0]s,
     [8, 0, 1, 0, 0, 0, 6, 0, 0],
     [0, 6, 0, 0, 0, 8, 3, 9, 2],
     [0, 0, 0, 0, 2, 0, 0, 0, 0],
@@ -28,7 +28,7 @@ medium_board_9 = np.array([
     [0, 1, 0, 2, 0, 0, 4, 0, 0],
     [3, 0, 0, 0, 0, 5, 0, 1, 0]
 ])
-mb9_sol = solve_board(medium_board_9, max_solve_time=600000)
+mb9_sol = solve_board(medium_board_9, max_solve_time=1200000)
 print(mb9_sol['solution'])
 
 # 9x9 difficult board
