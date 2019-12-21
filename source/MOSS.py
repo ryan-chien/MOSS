@@ -6,6 +6,40 @@
 ### Example 1: <https://towardsdatascience.com/using-integer-linear-programming-to-solve-sudoku-puzzles-15e9d2a70baa>
 ### Example 2: <https://www.mathworks.com/help/optim/examples/solve-sudoku-puzzles-via-integer-programming.html>
 
+# Prepare board using heuristics (Dan)
+def prep_board(initial_board):
+    import numpy as np
+    # read initial board
+    # example initial board
+    example_initial_board = np.array([
+        [0, 0, 0, 2, 6, 0, 7, 0, 1],
+        [6, 8, 0, 0, 7, 0, 0, 9, 0],
+        [1, 9, 0, 0, 0, 4, 5, 0, 0],
+        [8, 2, 0, 1, 0, 0, 0, 4, 0],
+        [0, 0, 4, 6, 0, 2, 9, 0, 0],
+        [0, 5, 0, 0, 0, 3, 0, 2, 8],
+        [0, 0, 9, 3, 0, 0, 0, 7, 4],
+        [0, 4, 0, 0, 5, 0, 0, 3, 6],
+        [7, 0, 3, 0, 1, 8, 0, 0, 0] ])
+        # some steps
+
+    # process board with heuristics
+        # some steps
+
+    # output processed board
+    example_processed_board = np.array([
+        ["x00>2", 0, 0, 2, 6, 0, 7, 0, 1],  # x00>2 because 1 and 2 are already in the row
+        [6, 8, 0, 0, 7, 0, 0, 9, 0],
+        [1, 9, 0, 0, 0, 4, 5, 0, 0],
+        [8, 2, 0, 1, 0, 0, 0, 4, 0],
+        [0, 0, 4, 6, 0, 2, 9, 0, 0],
+        [0, 5, 0, 0, 0, 3, 0, 2, 8],
+        [0, 0, 9, 3, 0, 0, 0, 7, 4],
+        [0, 4, 0, 0, 5, 0, 0, 3, 6],
+        [7, 0, 3, 0, 1, 8, 0, 0, 0] ])
+    return(example_processed_board)
+
+# Solve board using ILP solver
 def solve_board(initial_board, max_solve_time=120000):
     # libraries
     from ortools.linear_solver import pywraplp
