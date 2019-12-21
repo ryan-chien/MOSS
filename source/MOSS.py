@@ -10,6 +10,11 @@ def solve_board(initial_board, max_solve_time=120000):
     # libraries
     from ortools.linear_solver import pywraplp
     import numpy as np
+    from datetime import datetime
+
+    # Start timer
+    start_time = datetime.now()
+
     # Create solver
     print("(1) Initializing optimization model...")
     solver = pywraplp.Solver(
@@ -53,6 +58,29 @@ def solve_board(initial_board, max_solve_time=120000):
     for j in range(0, board_len):
         constraint_colsum[j] = solver.Add(
             sum(objective_vars[:, j]) == sum(range(board_len+1)))
+
+    # Set constraint: nonet sums
+    constraint_nonet = []
+    if board_len == 9:
+        solver.Add(
+            sum(sum(objective_vars[0:3, 0:3])) == sum(range(0, board_len + 1)))
+        solver.Add(
+            sum(sum(objective_vars[0:3, 3:6])) == sum(range(0, board_len + 1)))
+        solver.Add(
+            sum(sum(objective_vars[0:3, 6:9])) == sum(range(0, board_len + 1)))
+        solver.Add(
+            sum(sum(objective_vars[3:6, 0:3])) == sum(range(0, board_len + 1)))
+        solver.Add(
+            sum(sum(objective_vars[3:6, 3:6])) == sum(range(0, board_len + 1)))
+        solver.Add(
+            sum(sum(objective_vars[3:6, 6:9])) == sum(range(0, board_len + 1)))
+        solver.Add(
+            sum(sum(objective_vars[6:9, 0:3])) == sum(range(0, board_len + 1)))
+        solver.Add(
+            sum(sum(objective_vars[6:9, 3:6])) == sum(range(0, board_len + 1)))
+        solver.Add(
+            sum(sum(objective_vars[6:9, 6:9])) == sum(range(0, board_len + 1)))
+
 
     # Set constraint: t equals difference of objective value pairs row-wise (e.g. t0102 - x01 + x02 = 0)
     t_rows = []
@@ -296,14 +324,24 @@ def solve_board(initial_board, max_solve_time=120000):
         print("Solve failed, see status for details.")
     solution_values = np.array([
         [objective_vars[i][j].solution_value() for j in range(0, board_len)]
-        for i in range(0, board_len)
-    ])
+        for i in range(0, board_len)])
     model_as_string = solver.ExportModelAsLpFormat(False)
+
+    # End timer
+    end_time = datetime.now()
+    run_time = end_time-start_time
+
+    # More messaging
+    if status == 0:
+        print("Board of size " + str(board_len) + " solved in "
+              + str(run_time.seconds) + " seconds, using " + str(solver.iterations())
+              + " simplex iterations.")
 
     # Output
     return({
         "status": status,
-        "solution_values": solution_values,
-        "model_lp_file": model_as_string,
-        "solver_object": solver
+        "solution": solution_values.astype('int'),
+        "runtime_seconds": run_time.seconds,
+        "lp_file": model_as_string,
+        "solver": solver
     })
