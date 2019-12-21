@@ -34,6 +34,11 @@ For details of the absolute value constraint, see Gurobi Modeling, "Non Convex C
 As of 12/20/2019 MOSS satisfies all constraints.
 Now witness the firepower of this fully armed and operational battle station!
 
+
+![alt text](https://github.com/rychien-official/MOSS/tree/master/other/demo.gif)
+
+
+
 ``` {python}
 gentle_board_9 = np.array([
 ...    [0, 0, 0, 2, 6, 0, 7, 0, 1],
@@ -74,4 +79,7 @@ ILP solver, and the google-ortools team for the mathematical modeling interface.
 MOSS is dependent on 'ortools' and 'numpy'.
 
 ## Closing Remarks
-It is possible solve Sudoku with a two-index ILP formulation.
+It is possible solve Sudoku with a two-index ILP formulation. However, the two-index solution
+is slower than commonly available heuristic solvers. It would be interesting to compare solve
+times using a commercial ILP solver such as Gurobi or CPLEX, versus the current open-source 
+COIN-OR CBC solver.

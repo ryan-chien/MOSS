@@ -1,40 +1,5 @@
 # libraries
-import MOSS
 import numpy as np
-
-# Define initial Sudoku board (solver input)
-# 5x5 Sudoku
-gentle_board_5 = np.array([
-    [1, 0, 0, 0, 0],
-    [2, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0],
-    [0, 2, 0, 0, 0],
-    [0, 5, 0, 0, 0]])
-gb5_sol = solve_board(gentle_board_5)
-
-# 7x7 Sudoku
-gentle_board_7 = np.array([
-    [1, 0, 0, 0, 0, 0, 0],
-    [2, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0],
-    [0, 2, 0, 0, 0, 0, 0],
-    [0, 5, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1],
-    [0, 0, 0, 0, 0, 0, 2]])
-gb7_sol = solve_board(gentle_board_7)
-
-# 8x8 Sudoku
-gentle_board_8 = np.array([
-    [0, 1, 0, 0, 0, 0, 0, 2],
-    [0, 7, 0, 6, 4, 0, 0, 0],
-    [1, 0, 0, 0, 5, 0, 0, 8],
-    [5, 0, 0, 0, 0, 0, 4, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 3, 0, 4, 0, 0, 6, 0],
-    [6, 4, 0, 0, 0, 0, 3, 0],
-    [2, 0, 0, 0, 6, 7, 5, 0]])
-gb8_sol = solve_board(gentle_board_8)
-print(gb8_sol['solution'])
 
 # 9x9 sudoku from https://dingo.sbs.arizona.edu/~sandiway/sudoku/examples.html
 gentle_board_9 = np.array([
@@ -63,7 +28,7 @@ medium_board_9 = np.array([
     [0, 1, 0, 2, 0, 0, 4, 0, 0],
     [3, 0, 0, 0, 0, 5, 0, 1, 0]
 ])
-mb9_sol = solve_board(medium_board_9, max_solve_time=120000)
+mb9_sol = solve_board(medium_board_9, max_solve_time=600000)
 print(mb9_sol['solution'])
 
 # 9x9 difficult board
