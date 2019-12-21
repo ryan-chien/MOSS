@@ -7,7 +7,6 @@ Sudoku can be solved using a 3-index integer linear program (ILP) formulation us
 ***But can it be solved with a two-index formulation using
 integer values [1,9]? (Yes.)***
 
-
 ## Modeling Approach
 MOSS is based on finding a feasible solution to the following system of equations:
 ```
@@ -24,7 +23,9 @@ With the following constraints:
 ```
 Where x is the Sudoku board, and, x_i_j are cell-values within the board.
 
-Heuristics are completely unused. MOSS solves Sudoku using mathematical optimization only.
+MOSS solves Sudoku entirely using an ILP solver (e.g. COIN-OR CBC, CPLEX, and Gurobi). Heuristics
+are restricted to use only within the solver, (i.e. only those heuristics integrated into
+COIN-OR CBC are used). Heuristics designed specifically for Sudoku are *not* used.
 
 MOSS utilizes the absolute value constraint to enforce the all-different rule necesary for a Sudoku solution.
 For details of the absolute value constraint, see Gurobi Modeling, "Non Convex Case", page 9:
