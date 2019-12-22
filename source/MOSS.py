@@ -94,7 +94,7 @@ def solve_board(initial_board, max_solve_time=120000):
             sum(objective_vars[:, j]) == sum(range(board_len+1)))
 
     # Set constraint: nonet sums
-    constraint_nonet = []
+    # constraint_nonet = []
     if board_len == 9:
         solver.Add(
             sum(sum(objective_vars[0:3, 0:3])) == sum(range(0, board_len + 1)))
