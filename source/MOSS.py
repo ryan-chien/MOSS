@@ -81,7 +81,7 @@ def solve_board(initial_board, max_solve_time=120000):
                     'init_x'+str(i)+str(j)+'==NONE'
                 )
 
-    # Set constraint: sum of rows must equal 45
+    # Set constraint: sum of rows must equal 45 (Not necessary or sufficient, but could help bound.)
     constraint_rowsum = [[]] * board_len
     for i in range(0, board_len):
         constraint_rowsum[i] = solver.Add(
@@ -129,7 +129,7 @@ def solve_board(initial_board, max_solve_time=120000):
                 # one t for each unique objective variable x pair
                 t_j.append(
                     solver.IntVar(
-                        -99, 99, 't'+str(i)+str(k)+str(i)+str(j+1)))     # range of -99 to 99
+                        -10, 10, 't'+str(i)+str(k)+str(i)+str(j+1)))     # range of -10 to 10
                 constraint_t_j.append(
                     solver.Add(     # e.g. t0001=x00-x01 ... t0002=x00-x02
                         t_j[j-k]
@@ -162,13 +162,13 @@ def solve_board(initial_board, max_solve_time=120000):
             for variable_t in column:
                 p_j.append(
                     solver.IntVar(
-                        0, 99, 'p'+variable_t.name()[1:5]))
+                        0, 10, 'p'+variable_t.name()[1:5]))
                 n_j.append(
                     solver.IntVar(
-                        0, 99, 'n'+variable_t.name()[1:5]))
+                        0, 10, 'n'+variable_t.name()[1:5]))
                 z_j.append(
                     solver.IntVar(
-                        1, 99, 'z'+variable_t.name()[1:5])) # Note that z must be greater than or equal one
+                        1, 10, 'z'+variable_t.name()[1:5])) # Note that z must be greater than or equal one
                 y_j.append(
                     solver.BoolVar(
                         'y'+variable_t.name()[1:5]))
@@ -184,8 +184,8 @@ def solve_board(initial_board, max_solve_time=120000):
     # Set constraints: z equal to the absolute value of objective variable pair differences (Big M formulation)
     constraint_tpn_rows = []     # t-p+n=0
     constraint_zpn_rows = []     # z-p-n=0     e.g. z is the absolute value of objective variable pair differences
-    constraint_yp_rows = []      # p-99*y<=0   Big-M formulation, where M=99, to enforce either y=0 or p=0
-    constraint_yn_rows = []      # n+99*y<=99  Big-M formulation, where M=99, to enforce either y=0 or p=0
+    constraint_yp_rows = []      # p-10*y<=0   Big-M formulation, where M=10, to enforce either y=0 or p=0
+    constraint_yn_rows = []      # n+10*y<=10  Big-M formulation, where M=10, to enforce either y=0 or p=0
     for i in range(0, t_rows.__len__()):
         constraint_tpn_i = []
         constraint_zpn_i = []
@@ -211,17 +211,17 @@ def solve_board(initial_board, max_solve_time=120000):
                         - n_rows[i][j][k]
                         == 0,
                         'zpn'+z_rows[i][j][k].name()[1:5]))
-                constraint_yp_j.append(     # p-99*y<=0
+                constraint_yp_j.append(     # p-10*y<=0
                     solver.Add(
                         p_rows[i][j][k]
-                        - 99*y_rows[i][j][k]
+                        - 10*y_rows[i][j][k]
                         <= 0,
                         'yp'+p_rows[i][j][k].name()[1:5]))
-                constraint_yn_j.append(     # n+99*y<=99
+                constraint_yn_j.append(     # n+10*y<=10
                     solver.Add(
                         n_rows[i][j][k]
-                        + 99*y_rows[i][j][k]
-                        <= 99,
+                        + 10*y_rows[i][j][k]
+                        <= 10,
                         'yn' + n_rows[i][j][k].name()[1:5]))
             constraint_tpn_i.append(constraint_tpn_j)
             constraint_zpn_i.append(constraint_zpn_j)
@@ -245,7 +245,7 @@ def solve_board(initial_board, max_solve_time=120000):
                 # one t for each unique objective variable x pair
                 t_y.append(
                     solver.IntVar(
-                        -99, 99, 't_'+str(k)+str(i)+str(j+1)+str(i)))  # range of -99 to 99
+                        -10, 10, 't_'+str(k)+str(i)+str(j+1)+str(i)))  # range of -10 to 10
                 constraint_t_y.append(
                     solver.Add(  # e.g. t0001=x00-x01 ... t0002=x00-x02
                         t_y[j-k]
@@ -278,13 +278,13 @@ def solve_board(initial_board, max_solve_time=120000):
             for variable_t in column:
                 p_y.append(
                     solver.IntVar(
-                        0, 99, 'p_' + variable_t.name()[2:6]))
+                        0, 10, 'p_' + variable_t.name()[2:6]))
                 n_y.append(
                     solver.IntVar(
-                        0, 99, 'n_' + variable_t.name()[2:6]))
+                        0, 10, 'n_' + variable_t.name()[2:6]))
                 z_y.append(
                     solver.IntVar(
-                        1, 99, 'z_' + variable_t.name()[2:6]))  # Note that z must be greater than or equal one
+                        1, 10, 'z_' + variable_t.name()[2:6]))  # Note that z must be greater than or equal one
                 y_y.append(
                     solver.BoolVar(
                         'y_' + variable_t.name()[2:6]))
@@ -300,8 +300,8 @@ def solve_board(initial_board, max_solve_time=120000):
     # Set constraints: z equal to the absolute value of objective variable pair differences (Big M formulation)
     constraint_tpn_cols = []  # t-p+n=0
     constraint_zpn_cols = []  # z-p-n=0     e.g. z is the absolute value of objective variable pair differences
-    constraint_yp_cols = []  # p-99*y<=0   Big-M formulation, where M=99, to enforce either y=0 or p=0
-    constraint_yn_cols = []  # n+99*y<=99  Big-M formulation, where M=99, to enforce either y=0 or p=0
+    constraint_yp_cols = []  # p-10*y<=0   Big-M formulation, where M=10, to enforce either y=0 or p=0
+    constraint_yn_cols = []  # n+10*y<=10  Big-M formulation, where M=10, to enforce either y=0 or p=0
     for i in range(0, t_cols.__len__()):
         constraint_tpn_x = []
         constraint_zpn_x = []
@@ -327,17 +327,17 @@ def solve_board(initial_board, max_solve_time=120000):
                         - n_cols[i][j][k]
                         == 0,
                         'zpn_' + z_cols[i][j][k].name()[2:6]))
-                constraint_yp_y.append(  # p-99*y<=0
+                constraint_yp_y.append(  # p-10*y<=0
                     solver.Add(
                         p_cols[i][j][k]
-                        - 99 * y_cols[i][j][k]
+                        - 10 * y_cols[i][j][k]
                         <= 0,
                         'yp_' + p_cols[i][j][k].name()[2:6]))
-                constraint_yn_y.append(  # n+99*y<=99
+                constraint_yn_y.append(  # n+10*y<=10
                     solver.Add(
                         n_cols[i][j][k]
-                        + 99 * y_cols[i][j][k]
-                        <= 99,
+                        + 10 * y_cols[i][j][k]
+                        <= 10,
                         'yn_' + n_cols[i][j][k].name()[2:6]))
             constraint_tpn_x.append(constraint_tpn_y)
             constraint_zpn_x.append(constraint_zpn_y)

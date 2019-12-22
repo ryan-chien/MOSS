@@ -31,6 +31,8 @@ medium_board_9 = np.array([
 ])
 mb9_sol = solve_board(medium_board_9, max_solve_time=10800000)
 print(mb9_sol['solution'])
+with open("mb9.lp", "w") as text_file:
+    print(mb9_sol['lp_file'], file=text_file)
 
 # 9x9 difficult board
 difficult_board_9 = np.array([
@@ -46,3 +48,5 @@ difficult_board_9 = np.array([
 ])
 db9_sol = solve_board(difficult_board_9, max_solve_time=1200000)
 print(db9_sol['solution'])
+with open("./lp_files/db9.lp", "w") as text_file:
+    print(db9_sol['lp_file'], file=text_file)
